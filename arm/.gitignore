@@ -1,0 +1,4 @@
+proc_tb
+loadfile_all.img
+dumpfile
+verilogsim.trace
