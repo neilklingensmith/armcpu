@@ -9,7 +9,7 @@ conv:
 
 
 blinky:
-	arm-none-eabi-gcc -mthumb -mcpu=cortex-m0plus -nostartfiles -no-pie -Wl,--build-id=none -o blinky.elf -nostartfiles blinky.c -T cpu-himem.ld
+	arm-none-eabi-gcc -g -mthumb -mcpu=cortex-m0plus -nostartfiles -no-pie -Wl,--build-id=none -o blinky.elf -nostartfiles blinky.c -T cpu.ld
 	arm-none-eabi-objcopy -O verilog blinky.elf loadfile_all.img
 
 

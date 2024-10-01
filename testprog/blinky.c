@@ -13,18 +13,18 @@ void __attribute__((naked)) _start() {
 
 void delay(unsigned int d) {
     unsigned int i, j;
-//    for(i = 0; i < 0xfff; i++){
+    for(i = 0; i < 0xfff; i++){
         for(j = 0; j < d; j++) {
             asm("nop");
         }
-//    }
+    }
 }
 void main() {
 
     while(1) {
-        delay(0xf0);
-        *(unsigned int*)0xf0000 = -1;
-        delay(0xf0);
-        *(unsigned int*)0xf0000 = 0;
+        delay(0xff0);
+        *(unsigned int*)0xf000000 = -1;
+        delay(0xff0);
+        *(unsigned int*)0xf000000 = 0;
     }
 }

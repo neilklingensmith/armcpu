@@ -1,16 +1,12 @@
 
-`include "alu.v"
-`include "rf.v"
-`include "memory2c.v"
-`include "control.v"
-`include "byte_addressable_memory.v"
-`include "control.vh"
 
 
-
-
-module proc(clk, rst);
+module proc(clk, rst, addr, data_out, data_in, io_en);
   input clk, rst;
+
+  output wire [31:0] addr, data_out,  data_in;
+  output wire io_en;
+
   wire [31:0] instruction, dmem_out;
   wire [3:0] rf_read_0, rf_read_1, rf_write_reg;
   wire [31:0] rf_out_0, rf_out_1;
@@ -35,9 +31,14 @@ module proc(clk, rst);
   reg [31:0] pc;
   reg [31:0] rf_data_in;
 
+
+  assign addr = alu_out;
+  assign data_out = rf_out_1;
+  assign io_en =  (|addr[31:24]) & dmem_write_enable;
+
   always @ (posedge clk) begin
     if(rst) begin
-      pc <= 32'h10000;
+      pc <= 32'h0;
       new_pc_pop_register <= 32'b0;
       flags <= 0;
     end else if(force_stall_in_decode == 1'b0) begin
@@ -114,7 +115,14 @@ module proc(clk, rst);
   assign newflags = {alu_neg, alu_zero, alu_c_out, alu_ovfl};
 
   // Mem
-  byte_addressable_memory dmem(.data_out(dmem_out), .data_in(rf_out_1), .addr(alu_out[31:0]), .byte_enable(dmem_byte_enable), .wr(dmem_write_enable), .createdump(dmem_create_dump), .clk(clk), .rst(rst));
+  byte_addressable_memory dmem(.data_out(dmem_out),
+                               .data_in(rf_out_1),
+                               .addr(alu_out[31:0]),
+                               .byte_enable(dmem_byte_enable),
+                               .wr(dmem_write_enable),
+                               .createdump(dmem_create_dump),
+                               .clk(clk),
+                               .rst(rst));
 
   always @ (*)
     case(dmem_out_byte_select)
@@ -122,7 +130,7 @@ module proc(clk, rst);
         shifted_dmem_out = dmem_out;
       end
       2'b01: begin
-        shifted_dmem_out = {8'b0, dmem_out[31:8]};;
+        shifted_dmem_out = {8'b0, dmem_out[31:8]};
       end
       2'b10: begin
         shifted_dmem_out = {16'b0, dmem_out[31:16]};

@@ -6,7 +6,7 @@
 
 module control(clk, rst, instruction_encoding, rf_read_0, rf_read_1, rf_write, rf_write_enable, rf_data_in_select, alu_input_0, alu_input_1, alu_control, rf_out_0, rf_out_1, pc, new_pc_select, immediate, dmem_byte_enable, dmem_write_enable, dmem_create_dump, dmem_out_byte_select, force_stall_in_decode, flags, alu_carry_in, save_new_pc_from_dmem_out) ;
 
-  input alu_c_out, clk, rst;
+  input clk, rst;
   input [3:0] flags;
   input [31:0] instruction_encoding, rf_out_0, rf_out_1, pc;
   output reg [3:0] rf_read_0, rf_read_1, rf_write;
@@ -525,6 +525,12 @@ conditional_branch branch_decision_logic(.instruction_encoding(instruction_encod
           alu_input_1 = rf_out_1;
           rf_data_in_select = 2'bxx;
         end else begin
+          rf_read_1 = 4'bx;
+          rf_write_enable = 1'bx;
+          alu_control = `ALU_SUB_SIGNED_FUNCTION;
+          alu_input_0 = 32'bx;
+          alu_input_1 = 32'bx;
+          rf_data_in_select = 2'bxx;
           $display("Encountered unimplemented special data processing instruction");
           $display("INST: %08x", instruction_encoding);
           $display("PC:   %08x", pc);
@@ -723,6 +729,7 @@ conditional_branch branch_decision_logic(.instruction_encoding(instruction_encod
         dmem_create_dump = 1'b0;
         push_fsm_register_list = 16'bx;
         push_fsm_active = 1'b0;
+        push_fsm_push_pop = 1'bx;
         force_stall_in_decode = 1'b0;
         dmem_out_byte_select = 2'b0;
         dmem_write_enable = 0;
