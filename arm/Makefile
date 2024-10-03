@@ -6,7 +6,7 @@ proc_tb.vcd: proc_tb
 
 
 proc_tb: rf.v alu.v proc.v proc_tb.v control.v
-	iverilog -Wall -o $(EXEFILE) proc_tb.v
+	iverilog -Wall -o $(EXEFILE) alu.v byte_addressable_memory.v chip.v conditional_branch.v control.v proc.v push_fsm.v proc_tb.v
 
 
 

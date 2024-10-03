@@ -34,7 +34,7 @@
 
 module memory2c (data_out, data_in, addr, enable, wr, createdump, clk, rst);
 
-   parameter MEMSIZE = 32'h20000;
+   parameter MEMSIZE = 32'h400;
    output  [31:0] data_out;
    input [31:0]   data_in;
    input [31:0]   addr;
@@ -81,6 +81,7 @@ module memory2c (data_out, data_in, addr, enable, wr, createdump, clk, rst);
 	        mem[addr+0] = data_in[7:0];    // The actual write
             if ({1'b0, addr} > largest) largest = addr;  // avoid negative numbers
          end
+/*
          if (createdump) begin
             mcd = $fopen("dumpfile", "w");
             for (i=0; i<=largest+1; i=i+1) begin
@@ -88,6 +89,7 @@ module memory2c (data_out, data_in, addr, enable, wr, createdump, clk, rst);
             end
             $fclose(mcd);
          end
+*/
       end
    end
 

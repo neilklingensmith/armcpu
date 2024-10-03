@@ -1,8 +1,6 @@
 
 `timescale 1us/1us
 
-`include "chip.v"
-
 module proc_tb();
   reg clk,rst;
   wire [7:0] gpio;

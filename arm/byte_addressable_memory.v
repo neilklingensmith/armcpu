@@ -1,4 +1,3 @@
-`include "bytememory.v"
 
 module byte_addressable_memory(data_out, data_in, addr, byte_enable, wr, createdump, clk, rst);
 

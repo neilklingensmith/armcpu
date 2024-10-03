@@ -1,8 +1,5 @@
-
-`include "push_fsm.v"
-`include "conditional_branch.v"
 `include "control.vh"
-
+`include "alu.vh"
 
 module control(clk, rst, instruction_encoding, rf_read_0, rf_read_1, rf_write, rf_write_enable, rf_data_in_select, alu_input_0, alu_input_1, alu_control, rf_out_0, rf_out_1, pc, new_pc_select, immediate, dmem_byte_enable, dmem_write_enable, dmem_create_dump, dmem_out_byte_select, force_stall_in_decode, flags, alu_carry_in, save_new_pc_from_dmem_out) ;
 

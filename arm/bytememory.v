@@ -34,7 +34,7 @@
 
 module bytememory (data_out, data_in, addr, enable, wr, createdump, clk, rst);
 
-   parameter MEMSIZE = 32'h20000;
+   parameter MEMSIZE = 32'h400;
    output  [7:0] data_out;
    input [7:0]   data_in;
    input [31:0]   addr;
@@ -48,7 +48,7 @@ module bytememory (data_out, data_in, addr, enable, wr, createdump, clk, rst);
    
    reg [7:0]      mem [0:MEMSIZE-1];
    reg            loaded;
-   reg [16:0]     largest;
+   //reg [16:0]     largest;
 
    integer        mcd;
    integer        i;
@@ -57,6 +57,8 @@ module bytememory (data_out, data_in, addr, enable, wr, createdump, clk, rst);
    //    assign data_temp_0 = mem[addr];
    //    assign data_temp_2 = mem[{addr+8'h1];
    assign         data_out = (enable & (~wr))? {mem[addr+3],mem[addr+2],mem[addr+1],mem[addr]}: 0;
+
+/*
    initial begin
       loaded = 0;
       largest = 0;
@@ -64,20 +66,21 @@ module bytememory (data_out, data_in, addr, enable, wr, createdump, clk, rst);
          mem[i] = 8'd0;
       end
    end
-
+*/
    always @(posedge clk) begin
-      if (rst) begin
+//      if (rst) begin
          // first init to 0, then load loadfile_all.img
-         if (!loaded) begin
-            $readmemh("loadfile_all.img", mem);
-            loaded = 1;
-         end
-      end
-      else begin
+//         if (!loaded) begin
+//            $readmemh("loadfile_all.img", mem);
+//            loaded = 1;
+//         end
+//      end
+//      else begin
          if (enable & wr) begin
 	        mem[addr] = data_in;    // The actual write
-            if ({1'b0, addr} > largest) largest = addr;  // avoid negative numbers
+//            if ({1'b0, addr} > largest) largest = addr;  // avoid negative numbers
          end
+/*
          if (createdump) begin
             mcd = $fopen("dumpfile", "w");
             for (i=0; i<=largest+1; i=i+1) begin
@@ -85,7 +88,8 @@ module bytememory (data_out, data_in, addr, enable, wr, createdump, clk, rst);
             end
             $fclose(mcd);
          end
-      end
+*/
+//      end
    end
 
 

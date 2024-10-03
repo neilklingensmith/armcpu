@@ -1,14 +1,6 @@
 
 
-
-`include "alu.v"
-`include "rf.v"
-`include "memory2c.v"
-`include "control.v"
-`include "byte_addressable_memory.v"
 `include "control.vh"
-
-`include "proc.v"
 
 
 module chip(clk, rst, gpio);

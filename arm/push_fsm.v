@@ -1,4 +1,6 @@
 
+`include "alu.vh"
+
 /*
 State diagram for the push_fsm
 

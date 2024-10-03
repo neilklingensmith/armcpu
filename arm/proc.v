@@ -1,5 +1,6 @@
 
-
+`include "control.vh"
+`include "alu.vh"
 
 module proc(clk, rst, addr, data_out, data_in, io_en);
   input clk, rst;
